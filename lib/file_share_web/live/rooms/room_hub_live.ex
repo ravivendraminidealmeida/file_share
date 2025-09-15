@@ -16,19 +16,41 @@ defmodule FileShareWeb.RoomHubLive do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash}>
-      <.form for={@form} phx-change="validate" phx-submit="create" class="grid place-items-center">
-        <.input type="text" label="Room Name" field={@form[:name]} />
-        <.button type="submit" phx-disable-with="Creating...">Create</.button>
-      </.form>
+      <div class="grid grid-cols-3">
+        <div class="">
+          <.form for={@form} phx-change="validate" phx-submit="create" class="grid place-items-center">
+            <.input type="text" label="Room Name" field={@form[:name]} />
+            <.button type="submit" phx-disable-with="Creating...">Create</.button>
+          </.form>
+        </div>
 
-      <div>
-        <div>
+        <div class="col-span-2">
+          <div class="grid grid-cols-2 gap-3">
+            <div :for={room <- @rooms} class="card bg-base-100 w-85 shadow-sm">
+              <div class="card-body">
+                <p class="text-secondary">
+                  since
+                  <%= Calendar.strftime(room.inserted_at, "%d/%m/%Y %H:%M") %>
+                </p>
+                <h2 class="card-title">
+                  <div class="flex flex-row gap-3">
+                    <p class="font-bold">{room.id}&gt</p>
+                    <p>{room.name}</p>
+                  </div>
+                </h2>
+
+                <p>
+                  A card component has a figure, a body part, and inside body there are title and actions parts
+                </p>
+
+                <div class="card-actions justify-start">
+                  <.button navigate={~p"/"}>Go!</.button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <.list>
-        <:item :for={room <- @rooms} title="Name">{room.name}</:item>
-      </.list>
     </Layouts.app>
     """
   end

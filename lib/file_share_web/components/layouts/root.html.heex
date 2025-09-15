@@ -7,9 +7,10 @@
     <.live_title default="FileShare" suffix=" · Phoenix Framework">
       {assigns[:page_title]}
     </.live_title>
-    <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
+     <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
     </script>
+    
     <script>
       (() => {
         const setTheme = (theme) => {
@@ -30,7 +31,44 @@
       })();
     </script>
   </head>
+  
   <body>
-    {@inner_content}
+    <ul class="menu menu-horizontal w-full relative z-10 grid lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1 sm:place-items-center md:place-items-center gap-4 px-4 sm:px-6 lg:px-8 justify-between">
+      <div class="">
+        <li>
+          <a href="/" class="flex-1 flex w-fit items-center gap-2 justify-self-start">
+            <img src={~p"/images/logo.svg"} width="36" />
+            <span class="text-sm font-semibold">v{Application.spec(:phoenix, :vsn)}</span>
+          </a>
+        </li>
+      </div>
+      
+      <div>
+        <%= if @current_scope do %>
+          <li class="flex flex-row items-center gap-3 justify-center p-2">
+            {@current_scope.user.email} <.icon name="hero-user" />
+          </li>
+        <% else %>
+          <li>Please Log In to enjoy all the features.</li>
+        <% end %>
+      </div>
+      
+      <div class="flex flex-row justify-end">
+        <%= if @current_scope do %>
+          <li><.link href={~p"/users/settings"}>Settings <.icon name="hero-cog" /></.link></li>
+          
+          <li>
+            <.link href={~p"/users/log-out"} method="delete">
+              Log out <.icon name="hero-arrow-left-end-on-rectangle" />
+            </.link>
+          </li>
+        <% else %>
+          <li><.link href={~p"/users/register"}>Register</.link></li>
+          
+          <li><.link href={~p"/users/log-in"}>Log in</.link></li>
+        <% end %>
+      </div>
+    </ul>
+     {@inner_content}
   </body>
 </html>
