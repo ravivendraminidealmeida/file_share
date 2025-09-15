@@ -17,7 +17,8 @@ defmodule FileShareWeb.Router do
   scope "/", FileShareWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", RoomHubLive
+    live "/room/:id", RoomLive
   end
 
   # Other scopes may use custom stacks.
