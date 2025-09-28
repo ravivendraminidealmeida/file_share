@@ -5,6 +5,9 @@ defmodule FileShareWeb.RoomLive do
     {:ok,
      socket
      |> assign(:uploaded_files, [])
+     # This is a mockup and will be replaced before going into prod
+     # or maybe not I don't even know if this is going to prod
+     |> assign(:tracks, ["lorem", "ipsum", "dolor", "sit", "amet", "dolro", "dsajkdakj", "kjhsakjdkjsak"])
      |> allow_upload(:media, accept: ~w(.jpg .jpeg .mp4))}
   end
 
