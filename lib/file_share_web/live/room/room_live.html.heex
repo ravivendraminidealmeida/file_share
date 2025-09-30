@@ -1,7 +1,7 @@
 <Layouts.app flash={@flash}>
-  <div class="grid grid-cols-3">
+  <div class="lg:grid lg:grid-cols-3 sm:flex sm:flex-col sm:w-full">
     <div class="flex flex-col p-4 gap-3 justify-between">
-      <div class="">
+      <div class="min-w-60">
         <%!-- Shared Media --%>
         <div class="rounded-box shadow-md p-5">
           <div>
@@ -10,39 +10,51 @@
           
           <section class="p-2 max-h-60 overflow-y-auto">
             <%!-- ALL SHARED MEDIA SHOULD GO HERE --%>
-            <%= for track <- @tracks do %>
-              <div class="shadow-md p-4 rounded-md flex gap-3 flex flex-row items-center justify-between m-2">
-                <%!-- The media control should be here --%>
-                <div class="">
-                    <.button>
-                        <.icon name="hero-play"/>
-                    </.button>
+            <%= if @room.media != nil do %>
+              <%= for media <- @room.media do %>
+                <div class="shadow-md p-4 rounded-md flex gap-3 flex flex-row items-center justify-between m-2">
+                  <%!-- The media control should be here --%>
+                  <div class=""><.button><.icon name="hero-play" /></.button></div>
+                   <%!-- The media title should be here --%>
+                  <div class="flex-1 p-2">{media}</div>
+                   <%!-- The media preview should be here --%>
+                  <div class="border p-2 ">P</div>
                 </div>
-                 <%!-- The media title should be here --%>
-                <div class="flex-1 p-2">
-                    {track}
-                </div>
-                 <%!-- The media preview should be here --%>
-                <div class="border p-2 ">P</div>
-              </div>
+              <% end %>
+            <% else %>
+              <p class="text-center text-xl">No media uploaded yet &#128546;</p>
             <% end %>
           </section>
         </div>
-         <%!-- Media Upload --%>
-        <div class="mt-2">
-          <p class="text-xl text-primary">My Uploads</p>
-          
-          <section class="py-2">
-            <form
-              id="upload-form"
-              phx-submit="upload-file"
-              phx-change="validate"
-              class="flex flex-col gap-3"
+        
+        <.form id="upload-form" phx-submit="upload_file" phx-change="validate_upload">
+          <section class="mt-2 rounded-box shadow-md p-5 flex flex-col items-center">
+            <div>
+              <p class="text-2xl text-primary text-center">Pending Uploads</p>
+            </div>
+             <%!-- Pending Files --%> <%!-- Media Upload --%>
+            <ul>
+              <li :for={entry <- @uploads.media.entries} class="upload-entry">
+                <p>{entry.client_name}</p>
+                
+                <progress value={entry.progress} max="100" class="progress">
+                  {entry.progress}%
+                </progress>
+              </li>
+            </ul>
+            
+            <div
+              phx-drop-target={@uploads.media.ref}
+              class="w-full p-4 shadow-sm p-6 m-2 display flex flex-col gap-4 items-center"
             >
-              <.live_file_input upload={@uploads.media} class="file-input" />
-            </form>
+              <p class="">Drop your files here to upload</p>
+               <.icon name="hero-arrow-up-on-square-stack" class="size-12 text-center" />
+              <.live_file_input upload={@uploads.media} class="file-input m-auto" />
+            </div>
+             <button class="btn btn-primary w-full" type="submit">Confirm</button>
           </section>
-        </div>
+        </.form>
+        
       </div>
     </div>
     
