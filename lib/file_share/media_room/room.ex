@@ -4,7 +4,7 @@ defmodule FileShare.MediaRoom.Room do
 
   schema "rooms" do
     field :name, :string
-    field :media, {:array, :string}
+    has_many :media, FileShare.MediaRoom.Media
 
     timestamps(type: :utc_datetime)
   end
@@ -12,7 +12,7 @@ defmodule FileShare.MediaRoom.Room do
   @doc false
   def changeset(room, attrs) do
     room
-    |> cast(attrs, [:name, :media])
+    |> cast(attrs, [:name])
     |> validate_required([:name])
   end
 end
