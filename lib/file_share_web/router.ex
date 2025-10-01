@@ -22,6 +22,7 @@ defmodule FileShareWeb.Router do
 
     live "/", RoomHubLive
     live "/room/:id", RoomLive
+    live "/rooms/new", NewRoomLive
   end
 
   # Other scopes may use custom stacks.

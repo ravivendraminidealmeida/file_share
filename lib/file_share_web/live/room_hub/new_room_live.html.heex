@@ -1,0 +1,26 @@
+<Layouts.app flash={@flash}>
+<div class="m-auto max-w-120">
+  <.form
+    for={@form}
+    phx-submit="create"
+    class="flex flex-col items-center justify-center gap-3 w-full"
+  >
+    <div class="w-full">
+      <.input
+        label="Title"
+        type="text"
+        placeholder="Room Title"
+        field={@form[:name]}
+        class="input input-primary m-0 w-full"
+      />
+      <.button
+        type="submit"
+        phx-disable-with="Creating..."
+        class="btn btn-primary m-0"
+      >
+        Create
+      </.button>
+    </div>
+  </.form>
+  </div>
+</Layouts.app>
