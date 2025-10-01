@@ -6,7 +6,47 @@ defmodule FileShare.MediaRoom do
   import Ecto.Query, warn: false
   alias FileShare.Repo
 
-  alias FileShare.MediaRoom.Room
+  alias FileShare.MediaRoom.{Room, Media}
+
+  @doc """
+  Returns a list of all media.
+  """
+  def list_media do
+    Repo.all(Media)
+  end
+
+  @doc """
+  Gets a single media entry by ID.
+  Raises Ecto.NoResultsError if the media does not exist.
+  """
+  def get_media!(id) do
+    Repo.get!(Media, id)
+  end
+
+  @doc """
+  Creates a new media entry.
+  """
+  def create_media(attrs \\ %{}) do
+    %Media{}
+    |> Media.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates an existing media entry.
+  """
+  def update_media(%Media{} = media, attrs) do
+    media
+    |> Media.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a media entry.
+  """
+  def delete_media(%Media{} = media) do
+    Repo.delete(media)
+  end
 
   @doc """
   Returns the list of rooms.
