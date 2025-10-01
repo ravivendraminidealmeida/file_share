@@ -10,19 +10,21 @@
           
           <section class="p-2 max-h-60 overflow-y-auto">
             <%!-- ALL SHARED MEDIA SHOULD GO HERE --%>
-            <%= if @room.media != nil do %>
+            <%= if length(@room.media) == 0 do %>
+              <p class="text-center text-xl">No media uploaded yet &#128546;</p>
+            <% else %>
               <%= for media <- @room.media do %>
                 <div class="shadow-md p-4 rounded-md flex gap-3 flex flex-row items-center justify-between m-2">
                   <%!-- The media control should be here --%>
                   <div class=""><.button><.icon name="hero-play" /></.button></div>
                    <%!-- The media title should be here --%>
-                  <div class="flex-1 p-2">{media}</div>
+                  <div class="flex-1 p-2">{String.split(media.title, ".") |> Enum.at(0)}</div>
                    <%!-- The media preview should be here --%>
-                  <div class="border p-2 ">P</div>
+                  <div class="border border-primary p-2 rounded-md">
+                    <.icon class="size" name={determine_media_icon(media.type)} />
+                  </div>
                 </div>
               <% end %>
-            <% else %>
-              <p class="text-center text-xl">No media uploaded yet &#128546;</p>
             <% end %>
           </section>
         </div>
@@ -54,7 +56,6 @@
              <button class="btn btn-primary w-full" type="submit">Confirm</button>
           </section>
         </.form>
-        
       </div>
     </div>
     
