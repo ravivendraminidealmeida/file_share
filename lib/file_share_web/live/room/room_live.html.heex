@@ -1,6 +1,12 @@
 <Layouts.app flash={@flash}>
-  <div class="lg:grid lg:grid-cols-3 sm:flex sm:flex-col sm:w-full">
-    <div class="flex flex-col p-4 gap-3 justify-between">
+  <div class="lg:flex-row sm:flex sm:flex-col sm:w-full">
+    <div class="flex-3 rounded-box p-4 grid place-items-center">
+      <div class="rounded-box shadow-md size-full">
+
+      </div>
+    </div>
+    
+    <div class="flex flex-col p-4 gap-3 justify-between flex-1">
       <div class="min-w-60">
         <%!-- Shared Media --%>
         <div class="rounded-box shadow-md p-5">
@@ -47,7 +53,7 @@
             
             <div
               phx-drop-target={@uploads.media.ref}
-              class="w-full p-4 shadow-sm p-6 m-2 display flex flex-col gap-4 items-center"
+              class="w-full p-4 p-6 m-2 display flex flex-col gap-4 items-center"
             >
               <p class="">Drop your files here to upload</p>
                <.icon name="hero-arrow-up-on-square-stack" class="size-12 text-center" />
@@ -58,7 +64,5 @@
         </.form>
       </div>
     </div>
-    
-    <div class="colspan-3"></div>
   </div>
 </Layouts.app>
