@@ -5,8 +5,12 @@ defmodule FileShare.MediaRoom.Room do
 
   schema "rooms" do
     field :name, :string
-    has_one :selected_media, Media
     has_many :media, Media, preload_order: [desc: :inserted_at]
+
+    embeds_one :metadata, Metadata do
+      field :current_time_in_seconds, :integer
+      field :media_state, Ecto.Enum, values: [:running, :stopped, :loading]
+    end
 
     timestamps(type: :utc_datetime)
   end
