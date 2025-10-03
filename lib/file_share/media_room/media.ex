@@ -3,6 +3,9 @@ defmodule FileShare.MediaRoom.Media do
   import Ecto.Changeset
 
   schema "media" do
+    field :current_time_in_seconds, :integer
+    field :media_state, Ecto.Enum, values: [:running, :stopped, :loading]
+
     field :title, :string
     field :type, :string
     belongs_to :room, FileShare.MediaRoom.Room
