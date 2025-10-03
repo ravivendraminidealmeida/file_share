@@ -4,7 +4,9 @@ defmodule FileShare.MediaRoom.Room do
 
   schema "rooms" do
     field :name, :string
-    has_many :media, FileShare.MediaRoom.Media
+
+    has_many :media, FileShare.MediaRoom.Media,
+      preload_order: [desc: :inserted_at]
 
     timestamps(type: :utc_datetime)
   end

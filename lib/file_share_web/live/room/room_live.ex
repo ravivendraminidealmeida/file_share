@@ -5,6 +5,8 @@ defmodule FileShareWeb.RoomLive do
   alias FileShare.MediaRoom.{Media, Room}
   alias FileShare.Repo
 
+  alias Phoenix.PubSub
+
   defp error_to_string(:too_large), do: "Too large"
   defp error_to_string(:too_many_files), do: "You have selected too many files"
   defp error_to_string(:not_accepted), do: "You have selected an unacceptable file type"
@@ -14,8 +16,12 @@ defmodule FileShareWeb.RoomLive do
   defp determine_media_icon("audio" <> _), do: "hero-musical-note"
 
   def mount(params, _session, socket) do
+    room_id = params["id"]
+
+    PubSub.subscribe(FileShare.PubSub, "room:#{room_id}")
+
     media_room =
-      MediaRoom.get_room!(params["id"])
+      MediaRoom.get_room!(room_id)
       |> Repo.preload(:media)
 
     {:ok,
@@ -29,7 +35,7 @@ defmodule FileShareWeb.RoomLive do
   end
 
   def handle_event("upload_file", _unsigned_params, socket) do
-    _uploaded_files =
+    uploaded_files =
       consume_uploaded_entries(socket, :media, fn meta, entry ->
         dest_dir =
           Path.join(
@@ -51,6 +57,12 @@ defmodule FileShareWeb.RoomLive do
         {:ok, ~p"/uploads/#{Path.basename(entry.client_name)}"}
       end)
 
+    PubSub.broadcast(FileShare.PubSub, "room:#{socket.assigns.room.id}", :new_files)
+
+    {:noreply, socket}
+  end
+
+  def handle_info(:new_files, socket) do
     updated_room =
       MediaRoom.get_room!(socket.assigns.room.id)
       |> Repo.preload(:media)
